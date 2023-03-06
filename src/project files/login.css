@@ -33,6 +33,7 @@
 #signIn:hover{
     color: black;
     background-color: white;
+    transform: scale(1.25);
 }
 #Account{
     text-align: left;

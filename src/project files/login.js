@@ -12,7 +12,7 @@ const loginPage = () => {
             <button id="signIn">Sign In</button>
 
             <span className = "Reg">
-                <a href ="#">Don't Have An Account?</a>
+                <a href ="./register.js">Don't Have An Account?</a>
             </span>
         </div>
     )
