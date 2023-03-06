@@ -11,10 +11,8 @@ const loginPage = () => {
 
             <button id="signIn">Sign In</button>
 
-            <p>Don't Have An Account?</p>
-            <br></br>
-            <span className = "line">
-                <a href ="#">User Register</a>
+            <span className = "Reg">
+                <a href ="#">Don't Have An Account?</a>
             </span>
         </div>
     )

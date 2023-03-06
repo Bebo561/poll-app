@@ -5,7 +5,7 @@ function App() {
   return (
     <main>
       <div id = "Header">
-        <p id="site">Polling Website</p>
+        <p id="site">PollsrUs</p>
       </div>
       <Login />
       
