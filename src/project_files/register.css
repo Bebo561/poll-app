@@ -10,7 +10,7 @@ body{
     font-family: 'Inter', sans-serif;
     background-color: white;
     border: 1px solid black;
-    float: left;
+    float: right;
     height: 60vh;
     width: 50vh;
     box-shadow: 0px 5px 5px rgb(0, 0, 0);
@@ -22,19 +22,34 @@ body{
     flex-direction: column;
 }
 h1{
-    font-size: 4vh;
-    font-weight: 200 bold;
+    font-size: 5vh;
+    font-weight: 400 bold;
+    line-height: 72px; 
+    margin: 0 0 24px;
+
 }
+h2{
+    left: 0;
+    margin-bottom: 0vh;
+}
+
 #Half2{
     margin-top: 25vh;
     background-image:linear-gradient( 217deg,
     rgb(74, 72, 72),
     #151616 70.71%);
-    box-shadow: 0px 2px 2px rgb(26, 26, 26);
+    box-shadow: 0px 5px 5px rgb(0, 0, 0);
     border: 1px solid black;
+    align-items: center;
+    text-align: center;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    color: white;
+    justify-content: center;
     height: 60vh;
     width: 50vh;
-    float: right;
+    float: left;
 }
 input{
     border: none;
@@ -42,5 +57,30 @@ input{
     height: 4vh;
     margin-left: 10vh;
     width: 60%;
-    border-radius: 2px;
+    border-radius: 4px;
+}
+input:focus{
+    outline-color: rgb(42, 141, 234);
+    background-color: white;
+}
+#signUp{
+    display: inline-block;
+    box-sizing: border-box;
+    text-decoration: none;
+    text-align: center;
+    border: 2px solid black;
+    background-color: #151616;
+    margin: 0 auto;
+    color: white;
+    font-weight: 200;
+    height: 7vh;
+    width: 20vh;
+    border-radius: 24px;
+    transition: all 0.3s;
+    
+}
+#signUp:hover{
+    color: black;
+    background-color: white;
+    transform: scale(1.25);
 }

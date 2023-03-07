@@ -42,6 +42,7 @@
 #Log{
     border: none;
     background-color: rgb(226, 226, 226);
+    margin: 0 auto;
     height: 4vh;
     width: 60%;
     border-radius: 2px;
