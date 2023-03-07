@@ -8,8 +8,8 @@ const Login = () => {
 
         <div id = "Form">
             <h1>Login Form</h1>
-            <input type = "text" placeholder = "Username" />
-            <input type = "password" placeholder = "Password"/>
+            <input type = "text" id = "Log"placeholder = "Username" />
+            <input type = "password" id = "Log"placeholder = "Password"/>
 
             <button id="signIn">Sign In</button>
             <Link to ="/register" id="Reg">Don't Have An Account?</Link>
