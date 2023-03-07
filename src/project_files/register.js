@@ -5,7 +5,7 @@ const Register = () => {
     return  (
         <React.Fragment>
        <div id ="Half1">
-        <h1>Register Here</h1>
+        <h1>Register </h1>
         <h3>Username</h3>
         <input type = "text" id="user" placeholder = "Username" />
         <h3>Password</h3>
