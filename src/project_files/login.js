@@ -1,7 +1,9 @@
 import React from 'react';
 import "./login.css";
+import { Link} from 'react-router-dom';
+import Register from './register'
 
-const loginPage = () => {
+const Login = () => {
     return (
 
         <div id = "Form">
@@ -10,12 +12,10 @@ const loginPage = () => {
             <input type = "password" placeholder = "Password"/>
 
             <button id="signIn">Sign In</button>
-
-            <span className = "Reg">
-                <a href ="./register.js">Don't Have An Account?</a>
-            </span>
+            <Link to ="/register" id="Reg">Don't Have An Account?</Link>
+                
         </div>
     )
 }
 
-export default loginPage
+export default Login

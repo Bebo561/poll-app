@@ -1,15 +1,21 @@
-import Login from './project files/login.js';
+import Login from './project_files/login.js';
 import './App.css';
-
+import Register from './project_files/register.js'
+import {Routes, Route} from "react-router-dom";
+import React from 'react';
 function App() {
   return (
-    <main>
-      <div id = "Header">
-        <p id="site">PollsrUs</p>
-      </div>
-      <Login />
-      
-    </main>
+    <React.Fragment>
+    <div id = "Header">
+    <p id="site">PollsrUs</p>
+    </div>
+    <Routes>
+      <Route path = "/" element={<Login />}/>
+      <Route path = "/register" element={<Register />}/>
+    </Routes>
+
+    </React.Fragment>
+   
   );
 }
 

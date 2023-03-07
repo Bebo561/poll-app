@@ -53,5 +53,9 @@ input:focus{
 }
 #Reg{
     color: blue;
-    font-size: 3vh;
+    font-size: 2vh;
+    text-decoration: underline;
+}
+#Reg:focus{
+    color: white;
 }
