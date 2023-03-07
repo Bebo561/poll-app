@@ -76,14 +76,23 @@ input:focus{
     margin: 0 auto;
     color: white;
     font-weight: 200;
+    font-size: 2vh;
     height: 7vh;
     width: 20vh;
     border-radius: 24px;
     transition: all 0.3s;
-    
 }
 #signUp:hover{
     color: black;
     background-color: white;
     transform: scale(1.25);
+}
+#Home{
+    color: blue;
+    font-size: 2vh;
+    text-decoration: underline;
+    margin-top: 2vh;
+}
+#Home:hover{
+    color: black;
 }
