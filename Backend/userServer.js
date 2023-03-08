@@ -6,15 +6,20 @@ const glob = require("glob");
 const { isBooleanObject } = require('util/types');
 var cors = require('cors');
 
+//This function links the react frontend component requests to the backend server.
 app.use(cors({
     origin: 'http://localhost:3000',
     credentials: true
 }));
 
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.urlencoded({
+    extended: true
+}));
 
-var userList = new Set();
+//This functions handles the register request for new users, saves their information to a folder
+//called users in .json format. The username of an account is the key, so if the user registering
+//chooses a user already in use, the request throws an error 401.
 app.post('/register', function(req, res){
     if(!req.body.username || !req.body.password){
         res.status("400");
@@ -30,9 +35,30 @@ app.post('/register', function(req, res){
         fs.writeFile("Users/" + req.body.username + ".json", str, function(err){
             var rsp_obj = {};
             rsp_obj.message = "Successfully created";
-            return res.status(201).send(rsp_obj);
+            return res.status(200).send(rsp_obj);
         });
     }
+});
+
+app.post('/', function(req, res){
+    console.log('connection successful');
+    console.log(req.body);
+    console.log(req.body.username);
+    let username = req.body.username;
+    fs.readFile("Users/" + username + ".json", "utf8", function(err, data){
+        if(err){
+            return res.status(404).send("Account Does Not Exist.")
+        }
+        var jsonArr = JSON.parse(data);
+        if(jsonArr.password != req.body.password){
+            return res.status(404).send("Password Does Not Match.")
+        }
+        else{
+            return res.status(200).send("Success!")
+        }
+           
+        
+    });
 });
 
 app.listen(3001);
