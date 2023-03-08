@@ -40,6 +40,10 @@ app.post('/register', function(req, res){
     }
 });
 
+//This function takes in the login credentials from login.js. It first off starts by checking to see if the 
+//username exists in the user database, if not it returns a 404 error. If the username exists but the password is incorrect,
+//it returns an error 405. If both the username and password match, and returns back as a successful request and pushes
+//the user to the homepage of the site.
 app.post('/', function(req, res){
     console.log('connection successful');
     console.log(req.body);
@@ -51,13 +55,11 @@ app.post('/', function(req, res){
         }
         var jsonArr = JSON.parse(data);
         if(jsonArr.password != req.body.password){
-            return res.status(404).send("Password Does Not Match.")
+            return res.status(405).send("Password Does Not Match.")
         }
         else{
             return res.status(200).send("Success!")
         }
-           
-        
     });
 });
 
