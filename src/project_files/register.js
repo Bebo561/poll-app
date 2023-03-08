@@ -1,6 +1,6 @@
 import React from 'react';
 import "./register.css";
-import {useNavigate, Link} from 'react-router-dom';
+import {Link} from 'react-router-dom';
 import {withRouter} from './withRouter';
 
 import axios from 'axios';
@@ -32,15 +32,10 @@ class Register extends React.Component{
         axios.post(url, user).then((res) => {
             console.log(res);
             alert("Successful Submission!");
-        }).catch((error) => {
-            console.log(error)
-            alert("Error, failed to submit.");
-        })
-        try{
             this.props.navigate('/')
-        }catch(err){
-            console.log(err.message);
-        }
+        }).catch((error) => {
+            alert(error.message);
+        })
     }
     
     render(){

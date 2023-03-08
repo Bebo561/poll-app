@@ -18,20 +18,14 @@ var userList = new Set();
 app.post('/register', function(req, res){
     if(!req.body.username || !req.body.password){
         res.status("400");
-        return res.end("Missing Fields!");
+        return res.send("Missing Fields!");
     }
     else{
         var Account = {username: req.body.username, password: req.body.password};
-        console.log(req.body.username);
-        console.log(userList);
-        if(userList.has(req.body.username)){
-                res.status("599");
-                res.end("User Already Exists!")
-        }
-
-        let userStr = req.body.username;
-        console.log(userStr)
-        userList.add(userStr);
+        var path = "Users/" + req.body.username +".json"
+        if (fs.existsSync(path)) {
+            return res.status(401).send("Account Already Exists!");
+          } 
         var str = JSON.stringify(Account, null, 2);
         fs.writeFile("Users/" + req.body.username + ".json", str, function(err){
             var rsp_obj = {};
