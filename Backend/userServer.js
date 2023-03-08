@@ -14,42 +14,31 @@ app.use(cors({
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }))
 
-var userList = [];
+var userList = new Set();
 app.post('/register', function(req, res){
     if(!req.body.username || !req.body.password){
         res.status("400");
-        res.end("Missing Fields!");
+        return res.end("Missing Fields!");
     }
     else{
-        userList.filter(function(user){
-            if(userList.username === req.body.username){
-                res.render('register',{
-                    message: "User name already exists, choose another"});
-            }
-        });
-        var newAccount = {username: req.body.username, password: req.body.password};
-        userList.push(newUser);
-        req.session.user = newAccount;
-        res.redirect('/home');
-    }
-    var obj = {};
-    obj.username = req.body.username;
-    obj.password = req.body.password;
-
-    var str = JSON.stringify(obj, null, 2);
-    fs.writeFile("Users/" + req.body.username + ".json", str, function(err){
-        var rsp_obj = {};
-        if(err){
-            rsp_obj.username = null;
-            rsp_obj.message = 'Error - Username failed to create.'
-            return res.status(200).send(rsp_obj);
+        var Account = {username: req.body.username, password: req.body.password};
+        console.log(req.body.username);
+        console.log(userList);
+        if(userList.has(req.body.username)){
+                res.status("599");
+                res.end("User Already Exists!")
         }
-        else{
-            rsp_obj.username = req.body.username;
+
+        let userStr = req.body.username;
+        console.log(userStr)
+        userList.add(userStr);
+        var str = JSON.stringify(Account, null, 2);
+        fs.writeFile("Users/" + req.body.username + ".json", str, function(err){
+            var rsp_obj = {};
             rsp_obj.message = "Successfully created";
             return res.status(201).send(rsp_obj);
-        }
-    });
+        });
+    }
 });
 
 app.listen(3001);

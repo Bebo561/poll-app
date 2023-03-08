@@ -1,8 +1,9 @@
 import React from 'react';
 import "./register.css";
-import { Link, json} from 'react-router-dom';
-import axios from 'axios';
+import {useNavigate, Link} from 'react-router-dom';
+import {withRouter} from './withRouter';
 
+import axios from 'axios';
 
 class Register extends React.Component{
     
@@ -13,7 +14,8 @@ class Register extends React.Component{
             username: '',
             password: ''
         };
-    }
+    } 
+    
     handleInputChnage= (e) => {
         this.setState({
             [e.target.name]: e.target.value
@@ -21,17 +23,24 @@ class Register extends React.Component{
     }
     handleSubmit =(event) => {
         event.preventDefault();
-        const url = 'http://localhost:3001/userServer';
+        const url = 'http://localhost:3001/register';
         const user = {
             username: this.state.username,
             password: this.state.password
         };
         console.log(user);
         axios.post(url, user).then((res) => {
+            console.log(res);
             alert("Successful Submission!");
         }).catch((error) => {
+            console.log(error)
             alert("Error, failed to submit.");
         })
+        try{
+            this.props.navigate('/')
+        }catch(err){
+            console.log(err.message);
+        }
     }
     
     render(){
@@ -43,7 +52,7 @@ class Register extends React.Component{
                     <input type = "text" onChange={this.handleInputChnage} name ="username" id="user" placeholder = "Username" />
                     <h3>Password</h3>
                     <input type = "password" onChange={this.handleInputChnage} id="pass" name ="password" placeholder = "Password"/>
-                    <button id="signUp" type = "Submit" onClick={this.handleSubmit}>Sign Up!</button>
+                    <button id="signUp" type = "Submit" onClick={this.handleSubmit} >Sign Up!</button>
                     <Link to ="/" id="Home">Already Have An Account?</Link>
                 </form>
                 <div id ="Half2">
@@ -52,7 +61,8 @@ class Register extends React.Component{
                 </div>
             </React.Fragment>
     )
+    
         }
 }
 
-export default Register
+export default withRouter(Register)
