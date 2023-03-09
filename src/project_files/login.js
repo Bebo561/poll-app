@@ -29,9 +29,10 @@ class Login extends React.Component{
         console.log(acc);
         axios.post(url, acc).then((res) => {
             alert("Successful Submission!");
+            console.log(res)
             this.props.navigate('/home');
         }).catch((error) => {
-            alert(error.message);
+            alert(error.response.data.message);
         })
     }
 

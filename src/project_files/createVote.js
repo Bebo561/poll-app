@@ -39,7 +39,7 @@ class CreateVote extends React.Component{
             alert("Poll Successfully Created!");
             this.props.navigate('/home');
         }).catch((error) => {
-            alert(error.message)
+            alert(error.response.data.message)
         });
     }
     render() {

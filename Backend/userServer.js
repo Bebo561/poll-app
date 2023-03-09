@@ -22,14 +22,14 @@ app.use(bodyParser.urlencoded({
 //chooses a user already in use, the request throws an error 401.
 app.post('/register', function(req, res){
     if(!req.body.username || !req.body.password){
-        res.status("400");
-        return res.send("Missing Fields!");
+
+        return res.status('400').json({message:"Error, Missing Fields"});
     }
     else{
         var Account = {username: req.body.username, password: req.body.password};
         var path = "Users/" + req.body.username +".json"
         if (fs.existsSync(path)) {
-            return res.status(401).send("Account Already Exists!");
+            return res.status(401).json({message:"Error, Account Already Exists"});
           } 
         var str = JSON.stringify(Account, null, 2);
         fs.writeFile("Users/" + req.body.username + ".json", str, function(err){
@@ -51,11 +51,11 @@ app.post('/', function(req, res){
     let username = req.body.username;
     fs.readFile("Users/" + username + ".json", "utf8", function(err, data){
         if(err){
-            return res.status(404).send("Account Does Not Exist.")
+            return res.status(404).json({message:"Error, Username Does Not Exist"});
         }
         var jsonArr = JSON.parse(data);
         if(jsonArr.password != req.body.password){
-            return res.status(405).send("Password Does Not Match.")
+            return res.status(405).json({message:"Error, Passwords Do Not Match"});
         }
         else{
             return res.status(200).send("Success!")
@@ -69,14 +69,14 @@ app.post('/createVote', function(req, res){
     console.log('Connection Successful');
     console.log(req.body);
     if(!req.body.pollName || !req.body.Option1 || !req.body.Option2 || !req.body.Option3){
-        return res.status(400).send("Missing Fields!");
+        return res.status(400).json({message:"Error, Missing Fields"});
     }
     else{
         var str = JSON.stringify(req.body, null, 2);
         console.log(req.body.pollName);
         var path = "Polls/" + req.body.pollName + ".json";
         if (fs.existsSync(path)) {
-            return res.status(401).send("Poll Already Exists!");
+            return res.status(401).json({message:"Error, Poll Already Exists"});
         } 
         fs.writeFile(path, str, function(err){
             return res.status(200).send("Success!");

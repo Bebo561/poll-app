@@ -34,7 +34,7 @@ class Register extends React.Component{
             alert("Successful Submission!");
             this.props.navigate('/')
         }).catch((error) => {
-            alert(error.message);
+            alert(error.response.data.message);
         })
     }
     
