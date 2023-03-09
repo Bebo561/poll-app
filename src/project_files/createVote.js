@@ -23,7 +23,24 @@ class createVote extends React.Component{
         });
     }
     handleCreatePoll = (event) =>{
-
+        event.preventDefault();
+        const url = 'http://localhost:3001/createVote';
+        const poll = {
+            pollName: this.state.pollName,
+            Option1: this.state.Option1,
+            numOfVotes1: 0,
+            Option2: this.state.Option2,
+            numOfVotes2: 0,
+            Option3: this.state.Option3,
+            numOfVotes3: 0
+        };
+        console.log(poll);
+        axios.post(url, poll).then((res)=>{
+            alert("Poll Successfully Created!");
+            this.props.navigate('/home');
+        }).catch((error) => {
+            alert(error.message)
+        });
     }
     render() {
     return(
