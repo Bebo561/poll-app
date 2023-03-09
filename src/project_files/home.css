@@ -1,3 +1,4 @@
+@import url('https://rsms.me/inter/inter.css');
 body{
     height: 100%;
     width: 100%;
@@ -17,4 +18,28 @@ body{
     display: flex;
     position: relative;
     flex-direction: column;
+}
+#createVote{
+    box-sizing: border-box;
+    text-decoration: none;
+    text-align: center;
+    position: absolute;
+    top:20%;
+    left: 0;
+    margin-left: 5vh;
+    border: 1px solid black;
+    font-size: 3vh;
+    background-color: rgb(40, 123, 255);
+    color: white;
+    font-weight: 200 bold;
+    font-family: 'Inter', Georgia;
+    height: 10vh;
+    width: 30vh;
+    border-radius: 12px;
+    transition: all 0.3s;
+}
+#createVote:hover{
+    color: white;
+    background-color: black;
+    transform: scale(1.25);
 }

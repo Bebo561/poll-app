@@ -1,12 +1,21 @@
 import React from 'react';
 import "./home.css";
+import {withRouter} from './withRouter';
 
-const Home = () => {
-    return (
-        <div id = "Homepage">
-            <h1>Hello World</h1>
-        </div>
-    )
+class Home extends React.Component {
+    handleCreation = (event) =>{
+        this.props.navigate("/createVote")
+    }
+    render() {
+        return (
+            <React.Fragment>
+                <button id = "createVote" onClick={this.handleCreation} type = "submit">Create Poll</button>
+                <div id = "Homepage">
+                    <h1>Hello World!</h1>   
+                </div>
+            </React.Fragment>
+        )
+    }
 }
 
-export default Home
+export default withRouter(Home)
