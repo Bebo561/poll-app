@@ -4,7 +4,7 @@ import {withRouter} from './withRouter';
 
 class Home extends React.Component {
     handleCreation = (event) =>{
-        this.props.navigate("/createVote")
+        this.props.navigate("/CreateVote")
     }
     render() {
         return (

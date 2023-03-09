@@ -4,7 +4,7 @@ import {Link} from 'react-router-dom';
 import {withRouter} from './withRouter';
 import axios from 'axios';
 
-class createVote extends React.Component{
+class CreateVote extends React.Component{
     constructor(props){
         super(props);
         this.state = {
@@ -45,16 +45,21 @@ class createVote extends React.Component{
     render() {
     return(
         <React.Fragment>
+            <Link to ="/home" id="return">Return To Homepage</Link>
             <form id ="pollCreation" method="POST" action="/createVote">
-            <input type = "text" id = "pollName" name="pollName" onChange={this.handlePollInput} placeholder = "Poll Name" />
-            <input type = "text" id = "Option" name="Option1" onChange={this.handlePollInput} placeholder = "Option 1" />
-            <input type = "text" id = "Option" name="Option2" onChange={this.handlePollInput} placeholder = "Option 2" />
-            <input type = "text" id = "Option" name="Option3" onChange={this.handlePollInput} placeholder = "Option 3" />
-            <button id="createPoll" onClick={this.handleCreatePoll}>Create Poll</button>
+                <h2 id ="ph1">Poll Name</h2>
+                <input type = "text" id = "pollName" name="pollName" onChange={this.handlePollInput} placeholder = "Poll Name" />
+                <h3 id ="ph">Poll Option 1</h3>
+                <input type = "text" id = "Option" name="Option1" onChange={this.handlePollInput} placeholder = "Option 1" />
+                <h3 id ="ph">Poll Option 2</h3>
+                <input type = "text" id = "Option" name="Option2" onChange={this.handlePollInput} placeholder = "Option 2" />
+                <h3 id ="ph">Poll Option 3</h3>
+                <input type = "text" id = "Option" name="Option3" onChange={this.handlePollInput} placeholder = "Option 3" />
+                <button id="createPoll" onClick={this.handleCreatePoll}>Create Poll</button>
             </form>
         </React.Fragment>
         )
     }
 }
 
-export default withRouter(createVote)
+export default withRouter(CreateVote)

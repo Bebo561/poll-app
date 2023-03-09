@@ -63,5 +63,26 @@ app.post('/', function(req, res){
     });
 });
 
+//This function receives input from createVote.js, it creates the poll data and stores it in the poll folder for the 
+//homepage to access later. Works identically to the user registration function.
+app.post('/createVote', function(req, res){
+    console.log('Connection Successful');
+    console.log(req.body);
+    if(!req.body.pollName || !req.body.Option1 || !req.body.Option2 || !req.body.Option3){
+        return res.status(400).send("Missing Fields!");
+    }
+    else{
+        var str = JSON.stringify(req.body, null, 2);
+        console.log(req.body.pollName);
+        var path = "Polls/" + req.body.pollName + ".json";
+        if (fs.existsSync(path)) {
+            return res.status(401).send("Poll Already Exists!");
+        } 
+        fs.writeFile(path, str, function(err){
+            return res.status(200).send("Success!");
+        });
+    }
+});
+
 app.listen(3001);
 console.log("Server started")
