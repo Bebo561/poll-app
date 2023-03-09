@@ -1,12 +1,16 @@
 import React from "react"
 import './createVote.css'
 
-const createVote = () => {
+class createVote extends React.Component{
+    render() {
     return(
-     <div id = "Homepage">
-            <h1>Hello World!</h1>   
-        </div>
-    )
+        <React.Fragment>
+            <div id = "Homepage">
+                <h1>Hello World!</h1>   
+            </div>
+        </React.Fragment>
+        )
+    }
 }
 
-export default createVote
+export default withRouter(createVote)
