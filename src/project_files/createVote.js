@@ -33,7 +33,7 @@ class createVote extends React.Component{
             <input type = "text" id = "Option" name="Option1" onChange={this.handlePollInput} placeholder = "Option 1" />
             <input type = "text" id = "Option" name="Option2" onChange={this.handlePollInput} placeholder = "Option 2" />
             <input type = "text" id = "Option" name="Option3" onChange={this.handlePollInput} placeholder = "Option 3" />
-            <button id="createPoll" onClick={this.handlePollInput}>Create Poll</button>
+            <button id="createPoll" onClick={this.handleCreatePoll}>Create Poll</button>
             </form>
         </React.Fragment>
         )
