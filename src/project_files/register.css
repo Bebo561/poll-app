@@ -21,11 +21,14 @@ body{
     flex-direction: column;
 }
 h1{
-    font-size: 40px;
+    font-size: 35px;
     font-weight: 400 bold;
     line-height: 72px; 
     margin: 0 0 24px;
 
+}
+#Regh{
+    font-size: 45px;
 }
 h3{
     left: 0;

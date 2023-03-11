@@ -42,7 +42,7 @@ class Register extends React.Component{
         return  (
             <React.Fragment>
                 <form id ="Half1" action ="/register" method = "POST">
-                    <h1>Register </h1>
+                    <h1 id ="Regh">Register </h1>
                     <h3>Username</h3>
                     <input type = "text" onChange={this.handleInputChnage} name ="username" id="user" placeholder = "Username" />
                     <h3>Password</h3>
