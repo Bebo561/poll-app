@@ -46,6 +46,9 @@ app.post('/register', function(req, res){
 //the user to the homepage of the site.
 app.post('/', function(req, res){
     console.log('connection successful');
+    if(!req.body.username || !req.body.password){
+        return res.status('400').json({message:"Error, Missing Fields"});
+    }
     console.log(req.body);
     console.log(req.body.username);
     let username = req.body.username;
