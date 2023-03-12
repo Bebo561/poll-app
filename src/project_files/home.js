@@ -8,9 +8,9 @@ import axios from 'axios';
 function Home(){
     const [info, SetInfo] = useState([]);
     var arr;
-    var [arr2, setArr2] = useState([]);
-    useEffect(() =>{
-        
+    var [input, setInput] = useState();
+    var [inputName, setInputName] = useState();
+    function LoadPage(){
         const url = 'http://localhost:3001/home';
         axios.get(url).then((res) => {
             SetInfo(JSON.stringify(res.data.polls));
@@ -18,31 +18,52 @@ function Home(){
         }).catch((error) => {
             alert(error.response.data.message);
      })
+    }
+    useEffect(() =>{
+    LoadPage();
     }, []);   
     
-    function PollSubmit(){
-        return 0;
+    function PollSubmit(event){
+        event.preventDefault();
+        
+        const link = 'http://localhost:3001/poll';
+        const data = {
+            pollName: inputName,
+            option: input
+        };
+        console.log(data);
+        axios.put(link, data).then((res)=>{
+            console.log(res);
+            LoadPage()
+            document.getElementById('PollSubmit').remove()
+        }).catch((error) => {
+            alert(error);
+        });
     }
 
     if(info.length > 0){
+        const HandlePollInput = (event) => {
+            event.persist();
+            setInput(event.target.id);
+            setInputName(event.target.value);      
+        }
+
         arr= JSON.parse(info)
-        console.log(arr[0].pollName)
         var indents = [];
-        for(var i = 0; i < arr.length; i++){
-            
+        for(var i = 0; i < arr.length; i++){   
             const elements = (
                 <form id = "PollHolder">
-                    <h3>{arr[0].pollName}</h3>
-                    <input type="radio" id="pollOption" name="pollOption" value="HTML"/>
-                    <label for="pollOption">{arr[i].Option1}</label><br></br>
+                    <h3>{arr[i].pollName}</h3>
+                    <input type="radio" id="Option1" onChange={HandlePollInput} name="pollOption" value={arr[i].pollName}/>
+                    <label for="Option1">{arr[i].Option1} - {arr[i].numOfVotes1}</label><br></br>
 
-                    <input type="radio" id="pollOption" name="pollOption" value="HTML"/>
-                    <label for="pollOption">{arr[i].Option2}</label><br></br>
+                    <input type="radio" id="Option2" name="pollOption" onChange={HandlePollInput} value={arr[i].pollName}/>
+                    <label for="Option2">{arr[i].Option2} - {arr[i].numOfVotes2}</label><br></br>
 
-                    <input type="radio" id="pollOption" name="pollOption" value="HTML"/>
-                    <label for="pollOption">{arr[i].Option3}</label><br></br>
+                    <input type="radio" id="Option3" name="pollOption" onChange={HandlePollInput} value={arr[i].pollName}/>
+                    <label for="Option3">{arr[i].Option3} - {arr[i].numOfVotes3}</label><br></br>
                 
-                    <button id="PollSubmit" type = "Submit" onClick={PollSubmit} >Submit Vote</button>
+                    <button id="PollSubmit" type = "Submit" name = {arr[i].pollName} onClick={PollSubmit} >Submit Vote</button>
                 </form>
             );
             indents.push(elements);
@@ -54,8 +75,7 @@ function Home(){
                    {indents}
                 </div>
             </React.Fragment>
-        )
-        
+        ) 
     }
 }
 

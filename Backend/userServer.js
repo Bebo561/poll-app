@@ -123,5 +123,36 @@ app.get('/home', function(req, res){
     })
 });
 
+app.put('/poll', function(req, res){
+    var pname = req.body.pollName;
+    var path = 'Polls/' + pname + '.json';
+    var option = req.body.option;
+    var obj = {};
+    fs.readFile(path, "utf8", function(err, data) {
+        if (err) {
+            return res.status(404).json({message: "Error- Internal Server Error"});
+        } else {
+          obj = JSON.parse(data);
+          if(option === "Option1"){
+            obj.numOfVotes1 += 1;
+          }
+          if(option === "Option2"){
+            obj.numOfVotes2 += 1;
+          }
+          if(option === "Option3"){
+            obj.numOfVotes3 += 1;
+          }
+        }
+        var str = JSON.stringify(obj, null, 2);
+        console.log(str);
+        fs.writeFile(path, str, function(err) {
+            if(err) {
+                return res.status(404).json({message: "Error-Unable To Update"});
+            } else {
+              return res.status(200).json({message: "Success"});
+            }
+          });
+      });
+});
 app.listen(3001);
 console.log("Server started")
