@@ -10,15 +10,37 @@ body{
     font-family: 'Inter', sans-serif;
     background-color: white;
     border: 1px solid black;
-    height: 60vh;
-    width: 50vh;
+    height: 100%;
+    width: 100vh;
     box-shadow: 0px 5px 5px rgb(0, 0, 0);
-    margin-top: 25vh;
-    text-align: center;
+    margin-top: 20vh;
     display: flex;
     position: relative;
     flex-direction: column;
 }
+#PollHolder{
+    display: table-cell;
+    position: relative; 
+    flex-direction: column;
+    justify-content: space-around;
+}
+#PollHolder h3{
+    margin-left: 4vh;
+}
+input[type="radio"]{
+    width: auto;
+    display: inline;
+    height: 2vh;
+    cursor: pointer;
+}
+input[type="radio"] label{
+    display: inline;
+    font-size:1em;
+    text-transform: uppercase;
+    color: black;  
+    cursor: pointer;
+}
+
 #createVote{
     box-sizing: border-box;
     text-decoration: none;
@@ -35,12 +57,29 @@ body{
     font-weight: 200 bold;
     font-family: 'Inter', Georgia;
     height: 10vh;
-    width: 30vh;
+    width: 25vh;
     border-radius: 12px;
     transition: all 0.3s;
 }
 #createVote:hover{
     color: white;
     background-color: black;
+    transform: scale(1.25);
+}
+#PollSubmit{
+    margin-left: 10vh;
+    margin-bottom: 2vh;
+    border: 1px solid black;
+    height: 4vh;
+    width: 10vh;
+    font-size: 10px;
+    background-color: rgb(45, 45, 46);
+    color: white;
+    border-radius: 8px;
+    transition: all 0.3s;
+}
+#PollSubmit:hover{
+    color: black;
+    background-color: white;
     transform: scale(1.25);
 }

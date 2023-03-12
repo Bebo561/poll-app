@@ -95,13 +95,14 @@ function readFiles(files, arr, res){
     }
     fs.readFile(pname, "utf8", function(err, data){
         if(err){
-            return res.status(404).send({message: "Error- Internal Server Error"});
+            return res.status(404).json({message: "Error- Internal Server Error"});
         }
         else{
-             arr.push(JSON.parse(data));
+            arr.push(JSON.parse(data));
             if(files.length == 0){
                 var obj = {};
                 obj.polls = arr;
+                console.log(obj);
                 return res.status(200).send(obj);
             }
             else{
@@ -116,7 +117,7 @@ app.get('/home', function(req, res){
     filesread = 0;
     glob("Polls/*.json", null, function(err, files){
         if(err){
-            return res.status(404).send({message: "Error- Internal Server Error"});
+            return res.status(404).json({message: "Error- Internal Server Error"});
         }
         readFiles(files, [], res)
     })
