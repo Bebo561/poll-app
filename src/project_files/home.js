@@ -1,21 +1,29 @@
 import React from 'react';
 import "./home.css";
-import {withRouter} from './withRouter';
+import {Link} from 'react-router-dom'
+import {useEffect} from 'react'
+import axios from 'axios';
 
-class Home extends React.Component {
-    handleCreation = (event) =>{
-        this.props.navigate("/CreateVote")
-    }
-    render() {
+
+function Home(){
+    useEffect(() =>{
+        const url = 'http://localhost:3001/home';
+        axios.get(url).then((res) => {
+            console.log(res);
+            alert("Successful Submission!");
+        }).catch((error) => {
+            alert(error.response.data.message);
+        })
+    });
+
         return (
             <React.Fragment>
-                <button id = "createVote" onClick={this.handleCreation} type = "submit">Create Poll</button>
+                <Link to="/CreateVote" id = "createVote">Create Poll</Link>
                 <div id = "Homepage">
                     <h1>Hello World!</h1>   
                 </div>
             </React.Fragment>
         )
-    }
 }
 
-export default withRouter(Home)
+export default Home

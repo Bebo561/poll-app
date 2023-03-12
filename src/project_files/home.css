@@ -23,6 +23,7 @@ body{
     box-sizing: border-box;
     text-decoration: none;
     text-align: center;
+    padding-top: 3vh;
     position: absolute;
     top:20%;
     left: 0;

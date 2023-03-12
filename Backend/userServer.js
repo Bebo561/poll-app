@@ -87,5 +87,40 @@ app.post('/createVote', function(req, res){
     }
 });
 
+//Helper function that reads all data from Poll folder to push it to the front homepage.
+function readFiles(files, arr, res){
+    pname = files.pop();
+    if(!pname){
+        return;
+    }
+    fs.readFile(pname, "utf8", function(err, data){
+        if(err){
+            return res.status(404).send({message: "Error- Internal Server Error"});
+        }
+        else{
+             arr.push(JSON.parse(data));
+            if(files.length == 0){
+                var obj = {};
+                obj.polls = arr;
+                return res.status(200).send(obj);
+            }
+            else{
+                readFiles(files, arr, res);
+            }
+        }
+    });
+}
+
+//This function retrieves all of the polls from the local directory and puts them on the homepage.
+app.get('/home', function(req, res){
+    filesread = 0;
+    glob("Polls/*.json", null, function(err, files){
+        if(err){
+            return res.status(404).send({message: "Error- Internal Server Error"});
+        }
+        readFiles(files, [], res)
+    })
+});
+
 app.listen(3001);
 console.log("Server started")
