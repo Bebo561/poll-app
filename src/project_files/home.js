@@ -35,7 +35,7 @@ function Home(){
         axios.put(link, data).then((res)=>{
             console.log(res);
             LoadPage()
-            document.getElementById('PollSubmit').remove()
+            document.getElementById(inputName).remove()
         }).catch((error) => {
             alert(error);
         });
@@ -63,7 +63,7 @@ function Home(){
                     <input type="radio" id="Option3" name="pollOption" onChange={HandlePollInput} value={arr[i].pollName}/>
                     <label for="Option3">{arr[i].Option3} - {arr[i].numOfVotes3}</label><br></br>
                 
-                    <button id="PollSubmit" type = "Submit" name = {arr[i].pollName} onClick={PollSubmit} >Submit Vote</button>
+                    <button id={arr[i].pollName} className = "PollSubmit" type = "Submit" onClick={PollSubmit} >Submit Vote</button>
                 </form>
             );
             indents.push(elements);
