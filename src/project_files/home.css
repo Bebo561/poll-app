@@ -84,3 +84,22 @@ input[type="radio"] label{
     background-color: white;
     transform: scale(1.25);
 }
+.PollDelete{
+    margin-left: 10vh;
+    margin-bottom: 2vh;
+    border: 1px solid black;
+    height: 4vh;
+    width: 10vh;
+    font-size: 10px;
+    margin-left: 50vh;
+    background-color: rgb(226, 45, 32);
+    color: white;
+    font-weight: bold;
+    border-radius: 8px;
+    transition: all 0.3s;
+}
+.PollDelete:hover{
+    color: black;
+    background-color: white;
+    transform: scale(1.25);
+}

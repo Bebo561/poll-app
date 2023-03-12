@@ -2,7 +2,6 @@ import React from 'react';
 import "./home.css";
 import {Link} from 'react-router-dom'
 import {useEffect, useState} from 'react'
-import * as ReactDOM from 'react-dom';
 import axios from 'axios';
 
 function Home(){
@@ -10,6 +9,7 @@ function Home(){
     var arr;
     var [input, setInput] = useState();
     var [inputName, setInputName] = useState();
+    var delName;
     function LoadPage(){
         const url = 'http://localhost:3001/home';
         axios.get(url).then((res) => {
@@ -34,8 +34,23 @@ function Home(){
         console.log(data);
         axios.put(link, data).then((res)=>{
             console.log(res);
-            LoadPage()
+            LoadPage();
             document.getElementById(inputName).remove()
+        }).catch((error) => {
+            alert(error);
+        });
+    }
+    function PollDelete(event){
+        event.preventDefault();
+        delName = event.target.id;
+        const del = {
+            pollName: delName
+        };
+        console.log(del);
+        const link = 'http://localhost:3001/delete';
+        axios.delete(link, { data: {del} }).then((res)=>{
+            alert("Success");
+            LoadPage();
         }).catch((error) => {
             alert(error);
         });
@@ -64,6 +79,7 @@ function Home(){
                     <label for="Option3">{arr[i].Option3} - {arr[i].numOfVotes3}</label><br></br>
                 
                     <button id={arr[i].pollName} className = "PollSubmit" type = "Submit" onClick={PollSubmit} >Submit Vote</button>
+                    <button id={arr[i].pollName} className = "PollDelete" type = "Submit" onClick={PollDelete} >Delete Poll</button>
                 </form>
             );
             indents.push(elements);

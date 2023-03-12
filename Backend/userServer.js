@@ -154,5 +154,19 @@ app.put('/poll', function(req, res){
           });
       });
 });
+
+app.delete('/delete', function(req, res){
+    var pname = req.body.del.pollName;
+    console.log(req.body.del.pollName);
+    var path = 'Polls/' + pname + '.json';
+    fs.unlink(path, function(err){
+        if(err){
+            return res.status(404).json({message: "Error-Unable To Delete"});
+        }
+        else{
+            return res.status(200).json({message: "Success!"});
+        }
+    });
+})
 app.listen(3001);
 console.log("Server started")
