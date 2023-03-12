@@ -27,35 +27,36 @@ function Home(){
     if(info.length > 0){
         arr= JSON.parse(info)
         console.log(arr[0].pollName)
+        var indents = [];
+        for(var i = 0; i < arr.length; i++){
+            
+            const elements = (
+                <form id = "PollHolder">
+                    <h3>{arr[0].pollName}</h3>
+                    <input type="radio" id="pollOption" name="pollOption" value="HTML"/>
+                    <label for="pollOption">{arr[i].Option1}</label><br></br>
 
-        const elements = (
-            <form id = "PollHolder">
-                <h3>{arr[0].pollName}</h3>
-                <input type="radio" id="pollOption" name="pollOption" value="HTML"/>
-                <label for="pollOption">{arr[0].Option1}</label><br></br>
+                    <input type="radio" id="pollOption" name="pollOption" value="HTML"/>
+                    <label for="pollOption">{arr[i].Option2}</label><br></br>
 
-                <input type="radio" id="pollOption" name="pollOption" value="HTML"/>
-                <label for="pollOption">{arr[0].Option2}</label><br></br>
-
-                <input type="radio" id="pollOption" name="pollOption" value="HTML"/>
-                <label for="pollOption">{arr[0].Option3}</label><br></br>
+                    <input type="radio" id="pollOption" name="pollOption" value="HTML"/>
+                    <label for="pollOption">{arr[i].Option3}</label><br></br>
                 
-                <button id="PollSubmit" type = "Submit" onClick={PollSubmit} >Submit Vote</button>
-            </form>
-          );
-        //var h1 = React.createElement('h4', {id: "Hi"}, arr[0].pollName);
-        
-        ReactDOM.render(elements, document.getElementById('Homepage'));
-        
-    }
-    return (
+                    <button id="PollSubmit" type = "Submit" onClick={PollSubmit} >Submit Vote</button>
+                </form>
+            );
+            indents.push(elements);
+        }
+        return (
             <React.Fragment>
                 <Link to="/CreateVote" id = "createVote">Create Poll</Link>
                 <div id = "Homepage">
-                   
+                   {indents}
                 </div>
             </React.Fragment>
         )
+        
+    }
 }
 
 export default Home

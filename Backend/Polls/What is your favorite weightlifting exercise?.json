@@ -1,0 +1,9 @@
+{
+  "pollName": "What is your favorite weightlifting exercise?",
+  "Option1": "Bench Press",
+  "numOfVotes1": 0,
+  "Option2": "Squat",
+  "numOfVotes2": 0,
+  "Option3": "Deadlift",
+  "numOfVotes3": 0
+}
