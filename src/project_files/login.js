@@ -27,7 +27,7 @@ class Login extends React.Component{
             password: this.state.Password
         };
         localStorage.setItem("username", this.state.Username);
-        console.log(acc);
+        console.log(localStorage.getItem("username"));
         axios.post(url, acc).then((res) => {
             alert("Successful Submission!");
             console.log(res)

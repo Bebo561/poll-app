@@ -110,5 +110,7 @@ input[type="radio"] label{
     margin-left: 110vh;
     top: 19.5%;
     position: absolute;
-    
+}
+#PollHolder h6{
+    margin-left: 4vh;
 }

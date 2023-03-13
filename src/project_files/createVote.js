@@ -4,6 +4,8 @@ import {Link} from 'react-router-dom';
 import {withRouter} from './withRouter';
 import axios from 'axios';
 
+var uname;
+
 class CreateVote extends React.Component{
     constructor(props){
         super(props);
@@ -18,6 +20,8 @@ class CreateVote extends React.Component{
         };
     } 
     handlePollInput= (e) => {
+        uname = localStorage.getItem("username");
+        console.log(uname)
         this.setState({
             [e.target.name]: e.target.value
         });
@@ -25,6 +29,7 @@ class CreateVote extends React.Component{
     handleCreatePoll = (event) =>{
         event.preventDefault();
         const url = 'http://localhost:3001/createVote';
+        console.log(uname)
         const poll = {
             pollName: this.state.pollName,
             Option1: this.state.Option1,
@@ -33,7 +38,8 @@ class CreateVote extends React.Component{
             numOfVotes2: 0,
             Option3: this.state.Option3,
             numOfVotes3: 0,
-            users: []
+            users: [],
+            admin: uname
         };
         console.log(poll);
         axios.post(url, poll).then((res)=>{

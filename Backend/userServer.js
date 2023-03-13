@@ -5,7 +5,8 @@ const fs = require('fs');
 const glob = require("glob");
 const { isBooleanObject } = require('util/types');
 var cors = require('cors');
-
+var isEqual = require('lodash.isequal')
+var _ = require('lodash')
 //This function links the react frontend component requests to the backend server.
 app.use(cors({
     origin: 'http://localhost:3000',
@@ -162,7 +163,18 @@ app.put('/poll', function(req, res){
 
 app.delete('/delete', function(req, res){
     var pname = req.body.del.pollName;
+    var user = req.body.del.admin;
     var path = 'Polls/' + pname + '.json';
+    console.log(req.body.del);
+    var obj = {};
+    fs.readFile(path, "utf-8", function(err, data) {
+        if (err) {
+            return res.status(404).json({message: "Error- Internal Server Error"});
+        } 
+            obj = JSON.parse(data);
+    });
+    console.log(_.isEqual(JSON.stringify(user), JSON.stringify(obj.admin)))
+    
     fs.unlink(path, function(err){
         if(err){
             return res.status(404).json({message: "Error-Unable To Delete"});

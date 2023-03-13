@@ -31,7 +31,7 @@ function Home(){
     }
     function Logout(event){
         event.preventDefault();
-        localStorage.removeItem('username');
+        localStorage.removeItem("username");
     }
     function PollSubmit(event){
         event.preventDefault();
@@ -54,9 +54,11 @@ function Home(){
     }
     function PollDelete(event){
         event.preventDefault();
+        console.log(uname)
         delName = event.target.id;
         const del = {
-            pollName: delName
+            pollName: delName,
+            admin: uname
         };
         console.log(del);
         const link = 'http://localhost:3001/delete';
@@ -68,7 +70,6 @@ function Home(){
         });
     }
     if(info.length > 0){
-        console.log("Huh")
         const HandlePollInput = (event) => {
             event.persist();
             setInput(event.target.id);
@@ -80,6 +81,7 @@ function Home(){
             var elements = (
                 <form id = "PollHolder">
                     <h3>{arr[i].pollName}</h3>
+                    <h6>Created by: {arr[i].admin}</h6>
                     <input type="radio" id="Option1" onChange={HandlePollInput} name="pollOption" value={arr[i].pollName}/>
                     <label for="Option1">{arr[i].Option1} - {arr[i].numOfVotes1}</label><br></br>
 
@@ -121,7 +123,7 @@ function Home(){
                    <h3>Nothing To Show</h3>
                 </div>
                 <Dropdown isOpen={dropdownOpen} toggle={toggle} id="drop">
-                        <DropdownToggle caret size="lg">
+                        <DropdownToggle caret size="lg" color = 'primary'>
                          {uname}
                         </DropdownToggle>
                         <DropdownMenu>
