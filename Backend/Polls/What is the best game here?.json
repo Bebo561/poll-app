@@ -1,0 +1,13 @@
+{
+  "pollName": "What is the best game here?",
+  "Option1": "Destiny 2",
+  "numOfVotes1": 0,
+  "Option2": "Black Ops 3",
+  "numOfVotes2": 2,
+  "Option3": "Elden Ring",
+  "numOfVotes3": 0,
+  "users": [
+    "Bebo561",
+    "ChefOmarDee"
+  ]
+}

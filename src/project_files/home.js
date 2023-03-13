@@ -2,8 +2,9 @@ import React from 'react';
 import "./home.css";
 import {Link} from 'react-router-dom'
 import {useEffect, useState} from 'react'
-import axios from 'axios';
-
+import axios from 'axios'
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { Dropdown, DropdownToggle, DropdownMenu, DropdownItem,} from 'reactstrap'
 function Home(){
     const [info, SetInfo] = useState([]);
     var arr;
@@ -22,8 +23,16 @@ function Home(){
     }
     useEffect(() =>{
     LoadPage();
-    }, []);   
-    
+    }, []); 
+
+    const [dropdownOpen, setDropdownOpen] = useState(false);
+    function toggle(){
+        setDropdownOpen((prevState) => !prevState);
+    }
+    function Logout(event){
+        event.preventDefault();
+        localStorage.removeItem('username');
+    }
     function PollSubmit(event){
         event.preventDefault();
         
@@ -58,8 +67,8 @@ function Home(){
             alert(error.response.data.message);
         });
     }
-
     if(info.length > 0){
+        console.log("Huh")
         const HandlePollInput = (event) => {
             event.persist();
             setInput(event.target.id);
@@ -68,7 +77,7 @@ function Home(){
         arr= JSON.parse(info)
         var indents = [];
         for(var i = 0; i < arr.length; i++){   
-            const elements = (
+            var elements = (
                 <form id = "PollHolder">
                     <h3>{arr[i].pollName}</h3>
                     <input type="radio" id="Option1" onChange={HandlePollInput} name="pollOption" value={arr[i].pollName}/>
@@ -86,23 +95,41 @@ function Home(){
             );
             indents.push(elements);
         }
+       
         return (
             <React.Fragment>
                 <Link to="/CreateVote" id = "createVote">Create Poll</Link>
                 <div id = "Homepage">
-                   {indents}
+                    {indents}
                 </div>
-            </React.Fragment>
+                    <Dropdown isOpen={dropdownOpen} toggle={toggle} id="drop">
+                        <DropdownToggle caret size="lg" color= 'primary'>
+                         {uname}
+                        </DropdownToggle>
+                        <DropdownMenu>
+                            <DropdownItem><Link to="/" onClikc={Logout}>Logout</Link></DropdownItem>
+                        </DropdownMenu>
+                    </Dropdown>
+            </React.Fragment>  
         ) 
     }
     if(info.length === 0){
         return (
             <React.Fragment>
-                <Link to="/CreateVote" id = "createVote">Create Poll</Link>
+                <Link to="/CreateVote" id = "createVote" color= 'primary'>Create Poll</Link>
                 <div id = "Homepage">
                    <h3>Nothing To Show</h3>
                 </div>
+                <Dropdown isOpen={dropdownOpen} toggle={toggle} id="drop">
+                        <DropdownToggle caret size="lg">
+                         {uname}
+                        </DropdownToggle>
+                        <DropdownMenu>
+                            <DropdownItem><Link to="/" onClikc={Logout}>Logout</Link></DropdownItem>
+                        </DropdownMenu>
+                    </Dropdown>
             </React.Fragment>
+            
         ) 
     }
 }

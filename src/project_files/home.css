@@ -31,6 +31,8 @@ body{
 input[type="radio"]{
     width: auto;
     display: inline;
+    margin-left: 10vh;
+    margin-top: 3vh;
     height: 2vh;
     cursor: pointer;
 }
@@ -69,6 +71,7 @@ input[type="radio"] label{
 .PollSubmit{
     margin-left: 10vh;
     margin-bottom: 2vh;
+    margin-top: 2vh;
     border: 1px solid black;
     height: 4vh;
     width: 10vh;
@@ -102,4 +105,10 @@ input[type="radio"] label{
     color: black;
     background-color: white;
     transform: scale(1.25);
+}
+#drop{
+    margin-left: 110vh;
+    top: 19.5%;
+    position: absolute;
+    
 }
