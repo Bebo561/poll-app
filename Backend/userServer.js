@@ -49,8 +49,6 @@ app.post('/', function(req, res){
     if(!req.body.username || !req.body.password){
         return res.status('400').json({message:"Error, Missing Fields"});
     }
-    console.log(req.body);
-    console.log(req.body.username);
     let username = req.body.username;
     fs.readFile("Users/" + username + ".json", "utf8", function(err, data){
         if(err){
@@ -127,12 +125,19 @@ app.put('/poll', function(req, res){
     var pname = req.body.pollName;
     var path = 'Polls/' + pname + '.json';
     var option = req.body.option;
+    var user = req.body.users
     var obj = {};
     fs.readFile(path, "utf8", function(err, data) {
         if (err) {
             return res.status(404).json({message: "Error- Internal Server Error"});
-        } else {
-          obj = JSON.parse(data);
+        } 
+        else {
+            obj = JSON.parse(data);
+            for(var i = 0; i < obj.users.length; i++){
+                if(user === obj.users[i]){
+                    return res.status(404).json({message: "Error - User Has Already Voted"});
+                }
+            }
           if(option === "Option1"){
             obj.numOfVotes1 += 1;
           }
@@ -142,9 +147,9 @@ app.put('/poll', function(req, res){
           if(option === "Option3"){
             obj.numOfVotes3 += 1;
           }
+          obj.users.push(user);
         }
         var str = JSON.stringify(obj, null, 2);
-        console.log(str);
         fs.writeFile(path, str, function(err) {
             if(err) {
                 return res.status(404).json({message: "Error-Unable To Update"});
@@ -157,7 +162,6 @@ app.put('/poll', function(req, res){
 
 app.delete('/delete', function(req, res){
     var pname = req.body.del.pollName;
-    console.log(req.body.del.pollName);
     var path = 'Polls/' + pname + '.json';
     fs.unlink(path, function(err){
         if(err){

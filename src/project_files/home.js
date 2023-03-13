@@ -10,11 +10,12 @@ function Home(){
     var [input, setInput] = useState();
     var [inputName, setInputName] = useState();
     var delName;
+    var uname = localStorage.getItem("username");
     function LoadPage(){
         const url = 'http://localhost:3001/home';
         axios.get(url).then((res) => {
             SetInfo(JSON.stringify(res.data.polls));
-            
+            console.log(info.length)
         }).catch((error) => {
             alert(error.response.data.message);
      })
@@ -29,15 +30,17 @@ function Home(){
         const link = 'http://localhost:3001/poll';
         const data = {
             pollName: inputName,
-            option: input
+            option: input,
+            users: uname
         };
         console.log(data);
+
         axios.put(link, data).then((res)=>{
             console.log(res);
             LoadPage();
             document.getElementById(inputName).remove()
         }).catch((error) => {
-            alert(error);
+            alert(error.response.data.message)
         });
     }
     function PollDelete(event){
@@ -52,7 +55,7 @@ function Home(){
             alert("Success");
             LoadPage();
         }).catch((error) => {
-            alert(error);
+            alert(error.response.data.message);
         });
     }
 
@@ -62,7 +65,6 @@ function Home(){
             setInput(event.target.id);
             setInputName(event.target.value);      
         }
-
         arr= JSON.parse(info)
         var indents = [];
         for(var i = 0; i < arr.length; i++){   
@@ -89,6 +91,16 @@ function Home(){
                 <Link to="/CreateVote" id = "createVote">Create Poll</Link>
                 <div id = "Homepage">
                    {indents}
+                </div>
+            </React.Fragment>
+        ) 
+    }
+    if(info.length === 0){
+        return (
+            <React.Fragment>
+                <Link to="/CreateVote" id = "createVote">Create Poll</Link>
+                <div id = "Homepage">
+                   <h3>Nothing To Show</h3>
                 </div>
             </React.Fragment>
         ) 

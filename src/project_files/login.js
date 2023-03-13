@@ -26,6 +26,7 @@ class Login extends React.Component{
             username: this.state.Username,
             password: this.state.Password
         };
+        localStorage.setItem("username", this.state.Username);
         console.log(acc);
         axios.post(url, acc).then((res) => {
             alert("Successful Submission!");
@@ -33,6 +34,7 @@ class Login extends React.Component{
             this.props.navigate('/home');
         }).catch((error) => {
             alert(error.response.data.message);
+            console.log(error.response.data.message)
         })
     }
 
