@@ -39,7 +39,7 @@ class CreateVote extends React.Component{
             Option3: this.state.Option3,
             numOfVotes3: 0,
             users: [],
-            admin: uname
+            admin: [uname]
         };
         console.log(poll);
         axios.post(url, poll).then((res)=>{

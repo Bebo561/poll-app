@@ -1,0 +1,13 @@
+{
+  "pollName": "What language is the best?",
+  "Option1": "Javascript",
+  "numOfVotes1": 0,
+  "Option2": "C++",
+  "numOfVotes2": 0,
+  "Option3": "Java",
+  "numOfVotes3": 0,
+  "users": [],
+  "admin": [
+    "Bebo561"
+  ]
+}

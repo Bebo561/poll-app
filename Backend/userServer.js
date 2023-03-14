@@ -122,6 +122,11 @@ app.get('/home', function(req, res){
     })
 });
 
+//Put function, which is called whenever a user submits their votes. It essentially checks first to see if the user has
+//already voted by checking the users array in the json file, which holdes the usernames of people who have voted.
+//If they are found, the function returns an error, if not, the function adds their name to an obj copy of the json information.
+//The function then checks to see what option was picked, and then increments the votes in that option by one. Finally,
+//the function writes to the poll's json file and updates all information fields as needed.
 app.put('/poll', function(req, res){
     var pname = req.body.pollName;
     var path = 'Polls/' + pname + '.json';
@@ -161,9 +166,13 @@ app.put('/poll', function(req, res){
       });
 });
 
+//Delete function, essentially what it does is it first checks if the poll can be accessed, if not it return an error.
+//Then the function checks if the user requesting a deletion is also the same user who made the poll, if they are not
+//the function will return an error message informing them they cannot delete what they did not create. If the user
+//does match the creator of the post, the post is deleted and returns the message success. 
 app.delete('/delete', function(req, res){
     var pname = req.body.del.pollName;
-    var user = req.body.del.admin;
+    var delUser = req.body.del.admin;
     var path = 'Polls/' + pname + '.json';
     console.log(req.body.del);
     var obj = {};
@@ -171,16 +180,22 @@ app.delete('/delete', function(req, res){
         if (err) {
             return res.status(404).json({message: "Error- Internal Server Error"});
         } 
-            obj = JSON.parse(data);
-    });
-    console.log(_.isEqual(JSON.stringify(user), JSON.stringify(obj.admin)))
-    
-    fs.unlink(path, function(err){
-        if(err){
-            return res.status(404).json({message: "Error-Unable To Delete"});
-        }
         else{
-            return res.status(200).json({message: "Success!"});
+            obj = JSON.parse(data);
+            console.log(obj.admin.length)
+            for(var i = 0; i < obj.admin.length; i++){
+                if(delUser !== obj.admin[i]){
+                    return res.status(404).json({message: "Error - Did Not Create Post"});
+                }
+            }
+            fs.unlink(path, function(err){
+                if(err){
+                    return res.status(404).json({message: "Error-Unable To Delete"});
+                }
+                else{
+                    return res.status(200).json({message: "Success!"});
+                }
+            });
         }
     });
 })
