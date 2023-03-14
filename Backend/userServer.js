@@ -4,9 +4,9 @@ const bodyParser = require('body-parser');
 const fs = require('fs');
 const glob = require("glob");
 const { isBooleanObject } = require('util/types');
-var cors = require('cors');
-var isEqual = require('lodash.isequal')
-var _ = require('lodash')
+const cors = require('cors');
+const bcryptjs = require('bcryptjs');
+const saltRounds = 10;
 //This function links the react frontend component requests to the backend server.
 app.use(cors({
     origin: 'http://localhost:3000',
@@ -27,8 +27,21 @@ app.post('/register', function(req, res){
         return res.status('400').json({message:"Error, Missing Fields"});
     }
     else{
-        var Account = {username: req.body.username, password: req.body.password};
-        var path = "Users/" + req.body.username +".json"
+        var pword = JSON.stringify(req.body.password);
+        console.log(pword);
+        Hash(pword, req, res);
+    }
+});
+
+//Hashing function for signup.
+async function Hash(pword, req, res) {
+    //... fetch user from a db etc.
+    const hash = await bcryptjs.hash(pword, saltRounds);
+    console.log(hash) 
+    console.log(hash.length)
+    var Account = {username: req.body.username, password: hash};
+    console.log(bcryptjs.compare(pword, hash));
+        var path = "Users/" + req.body.username +".json";
         if (fs.existsSync(path)) {
             return res.status(401).json({message:"Error, Account Already Exists"});
           } 
@@ -38,9 +51,8 @@ app.post('/register', function(req, res){
             rsp_obj.message = "Successfully created";
             return res.status(200).send(rsp_obj);
         });
-    }
-});
-
+        return hash;
+}
 //This function takes in the login credentials from login.js. It first off starts by checking to see if the 
 //username exists in the user database, if not it returns a 404 error. If the username exists but the password is incorrect,
 //it returns an error 405. If both the username and password match, and returns back as a successful request and pushes
@@ -51,12 +63,13 @@ app.post('/', function(req, res){
         return res.status('400').json({message:"Error, Missing Fields"});
     }
     let username = req.body.username;
+    let pword = JSON.stringify(req.body.password);
     fs.readFile("Users/" + username + ".json", "utf8", function(err, data){
         if(err){
             return res.status(404).json({message:"Error, Username Does Not Exist"});
         }
         var jsonArr = JSON.parse(data);
-        if(jsonArr.password != req.body.password){
+        if(!bcryptjs.compare(pword, jsonArr.password)){
             return res.status(405).json({message:"Error, Passwords Do Not Match"});
         }
         else{
