@@ -69,14 +69,19 @@ app.post('/', function(req, res){
             return res.status(404).json({message:"Error, Username Does Not Exist"});
         }
         var jsonArr = JSON.parse(data);
-        if(!bcryptjs.compare(pword, jsonArr.password)){
-            return res.status(405).json({message:"Error, Passwords Do Not Match"});
-        }
-        else{
-            return res.status(200).send("Success!")
-        }
+        PasswordChecker(pword, jsonArr, res);
     });
 });
+
+async function PasswordChecker(pword, jsonArr, res){
+    var x = await bcryptjs.compare(pword, jsonArr.password);
+    if(x === false){
+        return res.status(405).json({message:"Error, Passwords Do Not Match"});
+    }
+    else{
+        return res.status(200).send("Success!")
+    }
+}
 
 //This function receives input from createVote.js, it creates the poll data and stores it in the poll folder for the 
 //homepage to access later. Works identically to the user registration function.
