@@ -80,31 +80,32 @@ app.post('/register', async function(req, res){
 //username exists in the user database, if not it returns a 404 error. If the username exists but the password is incorrect,
 //it returns an error 405. If both the username and password match, and returns back as a successful request and pushes
 //the user to the homepage of the site.
-app.post('/', function(req, res){
+app.post('/', async function(req, res){
     console.log('connection successful');
     if(!req.body.username || !req.body.password){
-        return res.status('400').json({message:"Error, Missing Fields"});
+        return res.status(400).json({message:"Error, Missing Fields"});
     }
-    let username = req.body.username;
-    let pword = JSON.stringify(req.body.password);
-    fs.readFile("Users/" + username + ".json", "utf8", function(err, data){
-        if(err){
-            return res.status(404).json({message:"Error, Username Does Not Exist"});
-        }
-        var jsonArr = JSON.parse(data);
-        PasswordChecker(pword, jsonArr, res);
-    });
-});
-
-async function PasswordChecker(pword, jsonArr, res){
-    var x = await bcryptjs.compare(pword, jsonArr.password);
-    if(x === false){
-        return res.status(405).json({message:"Error, Passwords Do Not Match"});
+    var x = await userModel.find({username: req.body.username}).count();
+    if(x === 0){
+        return res.status(401).json({message:"Error, User Does Not Exist"});
     }
     else{
-        return res.status(200).send("Success!")
+        var userData = await userModel.findOne({username: req.body.username});
+        if(userData !== null){
+            
+            var compare = await bcryptjs.compare(req.body.password, userData.password);
+            if(compare){
+                console.log(compare)
+                res.status(200).json({message: "Success!"});
+            }
+            else{
+                res.status(400).json({message: "Error, Incorrect Password"});
+            }
+        }
     }
-}
+});
+
+
 
 //This function receives input from createVote.js, it creates the poll data and stores it in the poll folder for the 
 //homepage to access later. Works identically to the user registration function.
