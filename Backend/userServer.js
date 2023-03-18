@@ -30,7 +30,7 @@ database.on('error', (error) =>{
 database.once('connection', () =>{
     console.log("Connection Successful!");
 });
-console.log('x');
+console.log('xx');
 
 //This functions handles the register request for new users, saves their information to a folder
 //called users in .json format. The username of an account is the key, so if the user registering
