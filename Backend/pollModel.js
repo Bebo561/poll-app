@@ -35,7 +35,7 @@ var pollSchema = new mongoose.Schema({
     },
     Admin:{
         required: true,
-        type: [String]
+        type: Array
     }
 });
 

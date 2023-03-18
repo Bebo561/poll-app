@@ -1,14 +1,12 @@
-const express = require('express')
-const app = express()
+const express = require('express');
+const app = express();
 const bodyParser = require('body-parser');
-const fs = require('fs');
-const glob = require("glob");
 const { isBooleanObject } = require('util/types');
 require('dotenv').config();
 const mongoose = require('mongoose');
 const cors = require('cors');
 const bcryptjs = require('bcryptjs');
-const { connect } = require('http2');
+
 
 const saltRounds = 10;
 
@@ -162,7 +160,6 @@ app.put('/poll', async function(req, res){
                 return res.status(400).json({message: "Error, User Has Already Voted"});
             }
         }
-        console.log("Hi")
         if(option === "Option1"){
             await pollModel.findOneAndUpdate({pollName: pname}, {$inc:{numOfVotes1: 1}});
             await pollModel.findOneAndUpdate({pollName: pname}, { $push: { Voted: user } });
@@ -188,34 +185,21 @@ app.put('/poll', async function(req, res){
 //Then the function checks if the user requesting a deletion is also the same user who made the poll, if they are not
 //the function will return an error message informing them they cannot delete what they did not create. If the user
 //does match the creator of the post, the post is deleted and returns the message success. 
-app.delete('/delete', function(req, res){
+app.delete('/delete', async function(req, res){
     var pname = req.body.del.pollName;
-    var delUser = req.body.del.admin;
-    var path = 'Polls/' + pname + '.json';
-    console.log(req.body.del);
-    var obj = {};
-    fs.readFile(path, "utf-8", function(err, data) {
-        if (err) {
-            return res.status(404).json({message: "Error- Internal Server Error"});
-        } 
-        else{
-            obj = JSON.parse(data);
-            console.log(obj.admin.length)
-            for(var i = 0; i < obj.admin.length; i++){
-                if(delUser !== obj.admin[i]){
-                    return res.status(404).json({message: "Error - Did Not Create Post"});
-                }
+    var user = req.body.del.admin;
+    var poll = await pollModel.findOne({pollName: pname});
+    if(poll !== null){
+        console.log(poll)
+        for(var i = 0; i < poll.Admin.length; i++){
+            if(poll.Admin[i] !== user){
+                return res.status(400).json({message: "Error- You Cannot Delete A Poll You Did Not Create"});
             }
-            fs.unlink(path, function(err){
-                if(err){
-                    return res.status(404).json({message: "Error-Unable To Delete"});
-                }
-                else{
-                    return res.status(200).json({message: "Success!"});
-                }
-            });
         }
-    });
+        await pollModel.findOneAndDelete({pollName: pname});
+        res.status(200).json({message: "Success!"});
+    }
+    
 })
 app.listen(3001);
 console.log("Server started")

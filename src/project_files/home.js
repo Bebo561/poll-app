@@ -81,7 +81,7 @@ function Home(){
             var elements = (
                 <form id = "PollHolder">
                     <h3>{arr[i].pollName}</h3>
-                    <h6>Created by: {arr[i].admin}</h6>
+                    <h6>Created by: {arr[i].Admin}</h6>
                     <input type="radio" id="Option1" onChange={HandlePollInput} name="pollOption" value={arr[i].pollName}/>
                     <label for="Option1">{arr[i].Option1} - {arr[i].numOfVotes1}</label><br></br>
 
@@ -97,7 +97,7 @@ function Home(){
             );
             indents.push(elements);
         }
-       
+       if(arr.length > 0){
         return (
             <React.Fragment>
                 <Link to="/CreateVote" id = "createVote">Create Poll</Link>
@@ -114,25 +114,27 @@ function Home(){
                     </Dropdown>
             </React.Fragment>  
         ) 
-    }
-    if(info.length === 0){
-        return (
-            <React.Fragment>
-                <Link to="/CreateVote" id = "createVote" color= 'primary'>Create Poll</Link>
-                <div id = "Homepage">
-                   <h3>Nothing To Show</h3>
-                </div>
-                <Dropdown isOpen={dropdownOpen} toggle={toggle} id="drop">
-                        <DropdownToggle caret size="lg" color = 'primary'>
-                         {uname}
-                        </DropdownToggle>
-                        <DropdownMenu>
-                            <DropdownItem><Link to="/" onClikc={Logout}>Logout</Link></DropdownItem>
-                        </DropdownMenu>
-                    </Dropdown>
-            </React.Fragment>
-            
-        ) 
+       }
+        if(arr.length === 0){
+    
+            return (
+                <React.Fragment>
+                    <Link to="/CreateVote" id = "createVote" color= 'primary'>Create Poll</Link>
+                    <div id = "Homepage">
+                       <h3>Nothing to show</h3>
+                    </div>
+                    <Dropdown isOpen={dropdownOpen} toggle={toggle} id="drop">
+                            <DropdownToggle caret size="lg" color = 'primary'>
+                             {uname}
+                            </DropdownToggle>
+                            <DropdownMenu>
+                                <DropdownItem><Link to="/" onClikc={Logout}>Logout</Link></DropdownItem>
+                            </DropdownMenu>
+                        </Dropdown>
+                </React.Fragment>
+                
+            ) 
+        }
     }
 }
 
