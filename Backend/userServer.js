@@ -9,11 +9,12 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const bcryptjs = require('bcryptjs');
 const { connect } = require('http2');
-var models = require('./models');
+
 const saltRounds = 10;
 
-const dblink = process.env.DB_URL;
-mongoose.connect(dblink);
+const DB_URL = process.env.DB_URL;
+
+mongoose.connect(DB_URL);
 const database = mongoose.connection;
 //This function links the react frontend component requests to the backend server.
 app.use(cors({
@@ -26,50 +27,55 @@ app.use(bodyParser.urlencoded({
     extended: true
 }));
 
-database.on('error', (error) =>{
-    console.log(error);
-});
 database.once('connection', () =>{
-    console.log("Connection Successful!");
+    console.log("Connected to Database!")
 });
-var userModel = models.userModel;
-var pollModel = models.pollModel;
+
+const userSchema = new mongoose.Schema({
+    username:{
+        required: true,
+        type: String
+    }, 
+    password:{
+        required: true,
+        type: String
+    }
+});
+
+var userModel = mongoose.model('user', userSchema);
+
 
 //This functions handles the register request for new users, saves their information to a folder
 //called users in .json format. The username of an account is the key, so if the user registering
 //chooses a user already in use, the request throws an error 401.
-app.post('/register', function(req, res){
+app.post('/register', async function(req, res){
     if(!req.body.username || !req.body.password){
 
-        return res.status('400').json({message:"Error, Missing Fields"});
+        return res.status(400).json({message:"Error, Missing Fields"});
     }
     else{
-        var pword = JSON.stringify(req.body.password);
-        console.log(pword);
-        Hash(pword, req, res);
+        var x = await userModel.find({username: req.body.username}).count();
+        if(x > 0){
+            return res.status(400).json({message:"Error, Account Already Exists"});
+        }
+        else{
+        const hashPword = await bcryptjs.hash(req.body.password, saltRounds);
+        const data = await userModel.create({
+            username: req.body.username,
+            password: hashPword
+        });
+        try{
+            await data.save();
+            console.log(data);
+            console.log("Success")
+            res.status(200).json({message: "Success!"})
+        }catch(error){
+            res.status(400).json({message: "Error"});
+        }
+    }
     }
 });
 
-//Hashing function for signup.
-async function Hash(pword, req, res) {
-    //... fetch user from a db etc.
-    const hash = await bcryptjs.hash(pword, saltRounds);
-    console.log(hash) 
-    console.log(hash.length)
-    var Account = {username: req.body.username, password: hash};
-    console.log(bcryptjs.compare(pword, hash));
-        var path = "Users/" + req.body.username +".json";
-        if (fs.existsSync(path)) {
-            return res.status(401).json({message:"Error, Account Already Exists"});
-          } 
-        var str = JSON.stringify(Account, null, 2);
-        fs.writeFile("Users/" + req.body.username + ".json", str, function(err){
-            var rsp_obj = {};
-            rsp_obj.message = "Successfully created";
-            return res.status(200).send(rsp_obj);
-        });
-        return hash;
-}
 //This function takes in the login credentials from login.js. It first off starts by checking to see if the 
 //username exists in the user database, if not it returns a 404 error. If the username exists but the password is incorrect,
 //it returns an error 405. If both the username and password match, and returns back as a successful request and pushes
