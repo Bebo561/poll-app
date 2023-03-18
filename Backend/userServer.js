@@ -31,20 +31,10 @@ database.once('connection', () =>{
     console.log("Connected to Database!")
 });
 
-const userSchema = new mongoose.Schema({
-    username:{
-        required: true,
-        type: String
-    }, 
-    password:{
-        required: true,
-        type: String
-    }
-});
-
+const uModel = require('./userModel');
 const pModel = require('./pollModel');
 
-var userModel = mongoose.model('user', userSchema);
+var userModel = uModel;
 var pollModel = pModel;
 
 //This functions handles the register request for new users, saves their information to a folder
@@ -147,13 +137,7 @@ app.post('/createVote', async function(req, res){
 
 //This function retrieves all of the polls from the local directory and puts them on the homepage.
 app.get('/home', function(req, res){
-    filesread = 0;
-    glob("Polls/*.json", null, function(err, files){
-        if(err){
-            return res.status(404).json({message: "Error- Internal Server Error"});
-        }
-        readFiles(files, [], res)
-    })
+    console.log("Work in progress")
 });
 
 //Put function, which is called whenever a user submits their votes. It essentially checks first to see if the user has
