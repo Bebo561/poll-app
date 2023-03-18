@@ -138,9 +138,7 @@ app.post('/createVote', async function(req, res){
 //This function retrieves all of the polls from the local directory and puts them on the homepage.
 app.get('/home', async function(req, res){
     try{
-        console.log("hi")
         const polls = await pollModel.find();
-        console.log(polls);
         res.status(200).send(polls);
     }catch(error){
         res.status(400).status({message:"Error, Server Error"});
@@ -152,43 +150,38 @@ app.get('/home', async function(req, res){
 //If they are found, the function returns an error, if not, the function adds their name to an obj copy of the json information.
 //The function then checks to see what option was picked, and then increments the votes in that option by one. Finally,
 //the function writes to the poll's json file and updates all information fields as needed.
-app.put('/poll', function(req, res){
+app.put('/poll', async function(req, res){
     var pname = req.body.pollName;
-    var path = 'Polls/' + pname + '.json';
     var option = req.body.option;
     var user = req.body.users
-    var obj = {};
-    fs.readFile(path, "utf8", function(err, data) {
-        if (err) {
-            return res.status(404).json({message: "Error- Internal Server Error"});
-        } 
-        else {
-            obj = JSON.parse(data);
-            for(var i = 0; i < obj.users.length; i++){
-                if(user === obj.users[i]){
-                    return res.status(404).json({message: "Error - User Has Already Voted"});
-                }
+
+    var poll = await pollModel.findOne({pollName: pname});
+    if(poll !== null){
+        for(var i = 0; i < poll.Voted.length; i++){
+            if(user === poll.Voted[i]){
+                return res.status(400).json({message: "Error, User Has Already Voted"});
             }
-          if(option === "Option1"){
-            obj.numOfVotes1 += 1;
-          }
-          if(option === "Option2"){
-            obj.numOfVotes2 += 1;
-          }
-          if(option === "Option3"){
-            obj.numOfVotes3 += 1;
-          }
-          obj.users.push(user);
         }
-        var str = JSON.stringify(obj, null, 2);
-        fs.writeFile(path, str, function(err) {
-            if(err) {
-                return res.status(404).json({message: "Error-Unable To Update"});
-            } else {
-              return res.status(200).json({message: "Success"});
-            }
-          });
-      });
+        console.log("Hi")
+        if(option === "Option1"){
+            await pollModel.findOneAndUpdate({pollName: pname}, {$inc:{numOfVotes1: 1}});
+            await pollModel.findOneAndUpdate({pollName: pname}, { $push: { Voted: user } });
+            return res.status(200).json({message: "Success!"});
+        }
+        if(option === "Option2"){
+            await pollModel.findOneAndUpdate({pollName: pname}, {$inc:{numOfVotes2: 1}});
+            await pollModel.findOneAndUpdate({pollName: pname}, { $push: { Voted: user } });
+            return res.status(200).json({message: "Success!"});
+        }
+        if(option === "Option3"){
+            await pollModel.findOneAndUpdate({pollName: pname}, {$inc:{numOfVotes3: 1}});
+            await pollModel.findOneAndUpdate({pollName: pname}, { $push: { Voted: user } });
+            return res.status(200).json({message: "Success!"});
+        }
+    }
+   
+    
+        
 });
 
 //Delete function, essentially what it does is it first checks if the poll can be accessed, if not it return an error.
