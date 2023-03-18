@@ -15,7 +15,7 @@ function Home(){
     function LoadPage(){
         const url = 'http://localhost:3001/home';
         axios.get(url).then((res) => {
-            SetInfo(JSON.stringify(res.data.polls));
+            SetInfo(JSON.stringify(res.data));
             console.log(info.length)
         }).catch((error) => {
             alert(error.response.data.message);

@@ -136,8 +136,15 @@ app.post('/createVote', async function(req, res){
 });
 
 //This function retrieves all of the polls from the local directory and puts them on the homepage.
-app.get('/home', function(req, res){
-    console.log("Work in progress")
+app.get('/home', async function(req, res){
+    try{
+        console.log("hi")
+        const polls = await pollModel.find();
+        console.log(polls);
+        res.status(200).send(polls);
+    }catch(error){
+        res.status(400).status({message:"Error, Server Error"});
+    }
 });
 
 //Put function, which is called whenever a user submits their votes. It essentially checks first to see if the user has
