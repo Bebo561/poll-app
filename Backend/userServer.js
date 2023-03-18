@@ -4,9 +4,15 @@ const bodyParser = require('body-parser');
 const fs = require('fs');
 const glob = require("glob");
 const { isBooleanObject } = require('util/types');
+require('dotenv').config();
+const mongoose = require('mongoose');
 const cors = require('cors');
 const bcryptjs = require('bcryptjs');
+const { connect } = require('http2');
 const saltRounds = 10;
+const dblink = process.env.DB_URL;
+mongoose.connect(dblink);
+const database = mongoose.connection;
 //This function links the react frontend component requests to the backend server.
 app.use(cors({
     origin: 'http://localhost:3000',
@@ -17,6 +23,13 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
     extended: true
 }));
+
+database.on('error', (error) =>{
+    console.log(error);
+});
+database.once('connection', () =>{
+    console.log("Connection Successful!");
+});
 
 //This functions handles the register request for new users, saves their information to a folder
 //called users in .json format. The username of an account is the key, so if the user registering
