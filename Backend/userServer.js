@@ -9,7 +9,9 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const bcryptjs = require('bcryptjs');
 const { connect } = require('http2');
+var models = require('./models');
 const saltRounds = 10;
+
 const dblink = process.env.DB_URL;
 mongoose.connect(dblink);
 const database = mongoose.connection;
@@ -30,7 +32,8 @@ database.on('error', (error) =>{
 database.once('connection', () =>{
     console.log("Connection Successful!");
 });
-console.log('xx');
+var userModel = models.userModel;
+var pollModel = models.pollModel;
 
 //This functions handles the register request for new users, saves their information to a folder
 //called users in .json format. The username of an account is the key, so if the user registering
