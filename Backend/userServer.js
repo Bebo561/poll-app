@@ -42,8 +42,10 @@ const userSchema = new mongoose.Schema({
     }
 });
 
-var userModel = mongoose.model('user', userSchema);
+const pModel = require('./pollModel');
 
+var userModel = mongoose.model('user', userSchema);
+var pollModel = pModel;
 
 //This functions handles the register request for new users, saves their information to a folder
 //called users in .json format. The username of an account is the key, so if the user registering
@@ -109,49 +111,39 @@ app.post('/', async function(req, res){
 
 //This function receives input from createVote.js, it creates the poll data and stores it in the poll folder for the 
 //homepage to access later. Works identically to the user registration function.
-app.post('/createVote', function(req, res){
+app.post('/createVote', async function(req, res){
     console.log('Connection Successful');
     console.log(req.body);
     if(!req.body.pollName || !req.body.Option1 || !req.body.Option2 || !req.body.Option3){
         return res.status(400).json({message:"Error, Missing Fields"});
     }
     else{
-        var str = JSON.stringify(req.body, null, 2);
-        console.log(req.body.pollName);
-        var path = "Polls/" + req.body.pollName + ".json";
-        if (fs.existsSync(path)) {
-            return res.status(401).json({message:"Error, Poll Already Exists"});
-        } 
-        fs.writeFile(path, str, function(err){
-            return res.status(200).send("Success!");
-        });
-    }
-});
-
-//Helper function that reads all data from Poll folder to push it to the front homepage.
-function readFiles(files, arr, res){
-    pname = files.pop();
-    if(!pname){
-        return;
-    }
-    fs.readFile(pname, "utf8", function(err, data){
-        if(err){
-            return res.status(404).json({message: "Error- Internal Server Error"});
+        var x = await pollModel.find({pollName: req.body.pollName}).count();
+        if(x >0){
+            return res.status(400).json({message:"Error, Poll Already exists!"});
         }
         else{
-            arr.push(JSON.parse(data));
-            if(files.length == 0){
-                var obj = {};
-                obj.polls = arr;
-                console.log(obj);
-                return res.status(200).send(obj);
-            }
-            else{
-                readFiles(files, arr, res);
+            const pollData = new pollModel({
+                pollName: req.body.pollName, 
+                Option1: req.body.Option1,
+                numOfVotes1: 0,
+                Option2: req.body.Option2,
+                numOfVotes2: 0,
+                Option3: req.body.Option3,
+                numOfVotes3: 0,
+                Voted: "",
+                Admin: req.body.admin
+            });
+            try{
+                console.log("worked")
+                pollData.save();
+                return res.status(200).json({message: "Success"});
+            }catch(error){
+                return res.status(400).json({message:"Error, Server Error"});
             }
         }
-    });
-}
+    }
+});
 
 //This function retrieves all of the polls from the local directory and puts them on the homepage.
 app.get('/home', function(req, res){
