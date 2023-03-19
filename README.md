@@ -1,5 +1,5 @@
 ## Website Running
-
+![](https://github.com/Bebo561/poll-app/blob/main/Polls%20R%20Us.gif)
 
 ## Techstack
 
